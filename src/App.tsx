@@ -1,23 +1,20 @@
 import { useState } from 'react';
 import './App.css';
 
+type Note = {
+	id?: number;
+	title: string;
+	content: string;
+}[];
+
 function App() {
 	const [count, setCount] = useState(0);
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
-	const [history, setHistory] = useState<{ title: string; content: string }[]>(
-		[]
-	);
-	const [future, setFuture] = useState<{ title: string; content: string }[]>(
-		[]
-	);
-	const [notes, setNotes] = useState<
-		{
-			title: string;
-			content: string;
-		}[]
-	>([]);
-	const [selectedNote, setSelectedNote] = useState(null);
+	const [history, setHistory] = useState<Note>([]);
+	const [future, setFuture] = useState<Note>([]);
+	const [notes, setNotes] = useState<Note>([]);
+	const [selectedNote, setSelectedNote] = useState<Note>([]);
 
 	console.log('title', title);
 	console.log('content', content);
@@ -107,14 +104,14 @@ function App() {
 						setHistory([]);
 						if (selectedNote) {
 							setNotes((prevNotes) =>
-								prevNotes.map((item) => {
-									if (item.id === selectedNote.id) {
-										return { ...item, title, content };
+								prevNotes.map((note) => {
+									if (note.id === selectedNote[0].id) {
+										return { ...note, title, content };
 									}
-									return item;
+									return note;
 								})
 							);
-							setSelectedNote(null);
+							setSelectedNote([]);
 						} else {
 							setNotes((prevNotes) => [
 								{ id: Date.now(), title, content },
@@ -136,9 +133,9 @@ function App() {
 						<p>{(note.content || '').slice(0, 40)}</p>
 						<button
 							onClick={() => {
-								setSelectedNote(note);
 								setTitle(note.title);
 								setContent(note.content);
+								setSelectedNote([note]);
 							}}
 						>
 							Edit
