@@ -140,6 +140,16 @@ function App() {
 						>
 							Edit
 						</button>
+						<button
+							onClick={() => {
+								setSelectedNote([]);
+								return setNotes((prevNotes) =>
+									prevNotes.filter((n) => n.id !== note.id)
+								);
+							}}
+						>
+							Delete
+						</button>
 					</div>
 				))}
 			</div>
